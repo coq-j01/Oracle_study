@@ -1,0 +1,60 @@
+-- 1번
+-- ENAME이 S로 끝나는 사원 데이터를 모두 출력
+SELECT *
+FROM EMP
+WHERE ENAME LIKE '%S';
+
+-- 2번
+-- 30번 부서에서 근무하는 사원 중 SALESMAN인 사원의 사원 번호, 이름, 직책, 급여, 부서 번호 출력
+SELECT EMPNO, ENAME, JOB, SAL, DEPTNO
+FROM EMP
+WHERE DEPTNO = 30
+AND JOB = 'SALESMAN';
+
+-- 3번
+-- 20,30번 부서 근무 사원 중 급여가 2000초과인 사원의 사원번호, 이름, 직책, 급여, 부서 번호 출력
+-- 집합 연산자 사용X
+SELECT EMPNO, ENAME, JOB, SAL,DEPTNO
+FROM EMP
+WHERE (DEPTNO = 30
+OR DEPTNO = 20)
+AND SAL > 2000;
+
+-- 집합 연산자 사용O
+SELECT EMPNO, ENAME, JOB, SAL,DEPTNO
+FROM EMP
+WHERE DEPTNO = 30
+AND SAL > 2000
+UNION 
+SELECT EMPNO, ENAME, JOB, SAL,DEPTNO
+FROM EMP
+WHERE DEPTNO = 20
+AND SAL > 2000;
+
+-- 4번
+-- NOT BETWEEN 쓰지 않고 급여 열이 2000이상 3000이하 범위 이외의 값을 가진 데이터 출력
+SELECT *
+FROM EMP
+MINUS
+SELECT *
+FROM EMP
+WHERE SAL BETWEEN 2000 AND 3000;
+
+-- 5번
+-- 사원 이름에 E가 포함된 30번 부서의 사원 중 급여가 1000~2000이 아닌 
+-- 사원 이름, 사원 번호, 급여, 부서 번호 출력
+SELECT ENAME, EMPNO, SAL, DEPTNO
+FROM EMP
+WHERE ENAME LIKE '%E%'
+AND DEPTNO = 30
+AND SAL NOT BETWEEN 1000 AND 2000;
+
+-- 6번
+-- 추가수당 없고 상급자 있고 직책이 MANAGER,CLERK인 사원 중 두번째 글자가 L이 아닌 사원 출력
+SELECT *
+FROM EMP
+WHERE COMM IS NULL
+AND MGR IS NOT NULL
+AND JOB IN ('MANAGER','CLERK')
+AND ENAME NOT LIKE '_L%';
+
